@@ -1,0 +1,24 @@
+[Unit]
+Description=1C:Enterprise Remote Administration Server 8.3 (%I)
+Requires=network.target
+
+[Service]
+Type=simple
+User=usr1cv8
+Group=grp1cv8
+# Remote administration server port
+Environment=RAS_PORT=1545
+
+# Address of cluster agent. Default - empty, so ras administers cluster,
+# running on localhost and standard agent port
+# example value:
+#   host[:port]
+Environment=RAS_CLUSTER_ADDRESS=
+EnvironmentFile=/opt/1cv8/systemd-conf/%i
+
+ExecStart=/bin/bash -c '/opt/1cv8/x86_64/${SRV1CV8_VERSION}/ras cluster --port=${RAS_PORT} $RAS_CLUSTER_ADDRESS'
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
